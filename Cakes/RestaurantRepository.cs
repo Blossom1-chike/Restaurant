@@ -15,19 +15,28 @@ namespace Cakes
             PropertyInfo[] p = restaurant.GetType().GetProperties();
             foreach (var day in p)
             {
+                string str = "";
+                int count = 0;
                 Console.Write(day.Name + ": ");
                 List<Hours> hours = (List<Hours>)day.GetValue(restaurant, null);
 
                 if (hours != null && hours.Count == 0)
-                    Console.Write("Closed");
-
+                    str += ("Closed");
+                
                 foreach (var hour in hours)
                 {
-                    
-                        Console.Write(UnixTimeToDateTime(hour.Value));
-                    
+                        str += UnixTimeToDateTime(hour.Value);
+                        if (hour.Type == "open")
+                            str += " - ";
+
+                        if (count != 0 && count < hours.Count && hour.Type == "closed")
+                            str += ",";
+
+                        count++;
+
                 }
-                Console.WriteLine();
+               
+                
 
             }
         }
